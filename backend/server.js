@@ -10,6 +10,12 @@ const app = express()
 dotenv.config()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+app.use(cors({
+    credentials: true,
+    origin: ['http://localhost:3001'],
+
+}));
+
 app.use(logger('dev'));
 app.use(cookieParser());
 app.use(authRoute)

@@ -21,6 +21,7 @@ export const userSignup = asyncHandler(async (req, res) => {
         generateToken(newUser._id, res)
         await newUser.save();
         res.status(201).json({ message: "User created successfully", newUser });
+        console.log(newUser)
     }
     else {
         res.status(400).json({ message: 'invalid user' })
@@ -52,5 +53,9 @@ export const updatProfile = asyncHandler(async (req, res) => {
     const uploadResponse = await cloudinary.uploader.upload(profilePic)
     const updateUser = User.findByIdAndUpdate(userId, { profilePic: uploadResponse.secure_url }, { new: true })
     res.status(200).json(updateUser)
+})
+
+export const checkAuth = asyncHandler(async (req, res) => {
+    res.status(200).json(req.user)
 })
 
