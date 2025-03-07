@@ -8,6 +8,7 @@ export const userAuthStore = create((set) => (
         authUser: null,
         isLogged: false,
         isSignup: false,
+        isUpdate: false,
         isCheckingAuth: true,
         checkAuth: async () => {
             try {
@@ -26,8 +27,8 @@ export const userAuthStore = create((set) => (
             set({ isSignup: true })
             try {
                 const res = await axiosInstance.post('/signup', data)
-                console.log(res.data, 'hello data')
-                set({ authUser: res.data });
+
+                set({ authUser: res.data.newUser });
                 toast.success(res.data.message)
                 // setTimeout(() => {
                 //     navigate("/", { replace: true });
@@ -59,16 +60,29 @@ export const userAuthStore = create((set) => (
         login: async (data) => {
             set({ isLogged: true });
             try {
-              const res = await axiosInstance.post("/login", data);
-              set({ authUser: res.data });
-              toast.success("Logged in successfully");
-        
-            //   get().connectSocket();
-            } catch (error) {
-              toast.error(error.response.data.message);
-            } finally {
-              set({ isLogged: false });
-            }
-          },
+                const res = await axiosInstance.post("/login", data);
+                set({ authUser: res.data.user });
+                toast.success("Logged in successfully");
 
+                //   get().connectSocket();
+            } catch (error) {
+                toast.error(error.response.data.message);
+            } finally {
+                set({ isLogged: false });
+            }
+        },
+        updateProfile: async (data) => {
+            set({ isUpdate: true });
+            try {
+                const res = await axiosInstance.put("/update", data);
+                set({ authUser: res.data });
+                toast.success("Profile updated successfully");
+            } catch (error) {
+                console.log("error in update profile:", error);
+                if (error.response && error.response.data) { toast.error(error.response.data.message); }
+
+            } finally {
+                set({ isUpdate: false });
+            }
+        }
     }))

@@ -30,13 +30,13 @@ export const userSignup = asyncHandler(async (req, res) => {
 })
 export const userLogin = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email })
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
         return res.status(401).json({ message: "Incorrect password or email" });
     }
     generateToken(user._id, res)
-    res.status(200).json({ message: "User logged in successfully" });
+    res.status(200).json({ message: "User logged in successfully",user });
 
 
 })
@@ -48,10 +48,11 @@ export const userLogout = asyncHandler(async (req, res) => {
 export const updatProfile = asyncHandler(async (req, res) => {
 
     const { profilePic } = req.body
+
     const userId = req.user._id
     if (!profilePic) return res.send(400).json({ message: 'no pictur found' })
     const uploadResponse = await cloudinary.uploader.upload(profilePic)
-    const updateUser = User.findByIdAndUpdate(userId, { profilePic: uploadResponse.secure_url }, { new: true })
+    const updateUser =await User.findByIdAndUpdate(userId, { profilePic: uploadResponse.secure_url }, { new: true })
     res.status(200).json(updateUser)
 })
 

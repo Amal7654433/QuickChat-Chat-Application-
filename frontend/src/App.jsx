@@ -13,7 +13,7 @@ function App() {
   const { authUser, isCheckingAuth, checkAuth } = userAuthStore()
   useEffect(() => {
     checkAuth()
-  }, [checkAuth])
+  }, [])
   if (isCheckingAuth && !authUser) {
     return (
       <div className='flex items-center justify-center h-screen'>
@@ -22,7 +22,7 @@ function App() {
     )
   }
   return (
-    <>
+    < div data-theme="dark">
       <Navbar />
       <Routes>
         <Route path="/login" element={!authUser ? <Login /> : <Navigate to="/" />} />
@@ -31,7 +31,7 @@ function App() {
         <Route path='/profile' element={authUser ? < Profile /> : <Navigate to="/login" />} />
       </Routes>
       <Toaster />
-    </>
+    </div>
   )
 }
 
