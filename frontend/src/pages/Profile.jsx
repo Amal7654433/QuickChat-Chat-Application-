@@ -5,7 +5,7 @@ import imageCompression from "browser-image-compression";
 const Profile = () => {
     const { authUser, updateProfile, isUpdate } = userAuthStore()
     const [selectedImg, setSelectedImg] = useState(null);
-   
+   console.log(authUser,'form profile pge')
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
