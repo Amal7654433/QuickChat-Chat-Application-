@@ -1,12 +1,15 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/user.model.js'
 import Message from '../models/message.model.js'
-import cloudinary from '../config/cloudinary'
+import cloudinary from '../config/cloudinary.js'
 
 
 export const getAllUsers = asyncHandler(async (req, res) => {
+    console.log('hhhyy')
     const loggedUserId = req.user._id
+    console.log(loggedUserId)
     const filterdUsers = await User.find({ _id: { $ne: loggedUserId } }).select("-password")
+    console.log(filterdUsers)
     res.status(200).json(filterdUsers)
 })
 
