@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { AlignRight, X, Search } from "lucide-react"; // Importing icons from Lucide
 import { useChatStore } from "../store/useChatStore";
+import { userAuthStore } from "../store/userAuth";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
-    const { getUsers, users, isUsersLoading, setSelectUser,selectedUser } = useChatStore()
+    const { getUsers, users, isUsersLoading, setSelectUser, selectedUser } = useChatStore()
+    const { onlineUsers } = userAuthStore()
     useEffect(() => {
         getUsers();
     }, [getUsers]);
@@ -38,16 +40,21 @@ const Sidebar = () => {
             {/* User List */}
             <ul className="space-y-4">
                 {filteredUsers.map((user) => (
-                    <li onClick={()=>setSelectUser(user)}
+                    <li onClick={() => setSelectUser(user)}
                         key={user._id}
                         className={`flex items-center bg-gray gap-3 p-3 backdrop-brightness-150 rounded-xl transition-all duration-200 ease-in-out hover:shadow-md hover:bg-indigo-400 cursor-pointer   ${selectedUser?._id === user._id ? "bg-gray-300 ring-1 ring-base-300  text-white" : ""}`}
                     >
                         <img src={user.profilePic || './avatar.png'} alt={user.name} className="w-10 h-10 rounded-full" />
                         {isOpen && (
                             <div className="flex-1 min-w-0">
-                                <h4 className="font-semibold truncate text-gray-800">{user.name}</h4>
+                                <div className=" flex items-center space-x-2 ">    <h4 className="font-semibold truncate text-gray-800">{user.name}</h4>
+                                    {onlineUsers.includes(user._id) && (
+                                        <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                                    )}
+                                </div>
+
                                 <span className={`  py-1 text-xs text-gray-900 `}>
-                                  online
+                                    {onlineUsers.includes(user._id) ? "Online" : "Offline"}
                                 </span>
                             </div>
                         )}

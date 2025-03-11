@@ -2,14 +2,15 @@ import asyncHandler from 'express-async-handler'
 import User from '../models/user.model.js'
 import Message from '../models/message.model.js'
 import cloudinary from '../config/cloudinary.js'
+import { getReceiverSocketId ,io} from '../config/socketio.js'
 
 
 export const getAllUsers = asyncHandler(async (req, res) => {
-    console.log('hhhyy')
+
     const loggedUserId = req.user._id
-    console.log(loggedUserId)
+
     const filterdUsers = await User.find({ _id: { $ne: loggedUserId } }).select("-password")
-    console.log(filterdUsers)
+
     res.status(200).json(filterdUsers)
 })
 
@@ -20,7 +21,8 @@ export const getMessages = asyncHandler(async (req, res) => {
     res.status(200).json(messages)
 })
 export const sendMessage = asyncHandler(async (req, res) => {
-    const { text, image } = req.params
+    const { text, image } = req.body
+
     const senderId = req.user._id
     const recieverId = req.params.id
     let imageUrl
@@ -35,6 +37,8 @@ export const sendMessage = asyncHandler(async (req, res) => {
         image: imageUrl
     })
     await newMessage.save()
-    res.send(201).json(newMessage)
+    const recieverSocketId = getReceiverSocketId(recieverId)
+    io.to(recieverSocketId).emit("newMessage", newMessage)
+    res.status(201).json(newMessage)
 
 })
