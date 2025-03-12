@@ -16,6 +16,7 @@
     "@tailwindcss/vite": "^4.0.4",
     "axios": "^1.8.1",
     "browser-image-compression": "^2.0.2",
+    "chat-application": "file:..",
     "lucide-react": "^0.477.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

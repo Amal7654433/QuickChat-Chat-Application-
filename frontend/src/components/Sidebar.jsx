@@ -6,15 +6,17 @@ import { userAuthStore } from "../store/userAuth";
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
+    const [showOnlineOnly, setShowOnlineOnly] = useState(false);
     const { getUsers, users, isUsersLoading, setSelectUser, selectedUser } = useChatStore()
     const { onlineUsers } = userAuthStore()
     useEffect(() => {
         getUsers();
     }, [getUsers]);
 
-    const filteredUsers = users.filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  
+    const filteredUsers = users
+        .filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        .filter(user => !showOnlineOnly || onlineUsers.includes(user._id));
 
     return (
         <div className={`h-screen bg-gray-100 shadow-lg p-4 transition-all duration-300 ease-in-out ${isOpen ? "w-70" : "w-30"}`}>
@@ -36,7 +38,20 @@ const Sidebar = () => {
                     <Search className="absolute left-3 top-3 text-gray-500" size={18} />
                 </div>
             )}
-
+            {isOpen && (
+                <div className="cursor-pointer  truncate  text-gray-800 flex items-center gap-2 mb-4">
+                 
+                    <span className="text-sm">Show online only</span>
+                    <input
+                        type="checkbox"
+                        checked={showOnlineOnly}
+                        onChange={(e) => setShowOnlineOnly(e.target.checked)}
+                        className="checkbox   checkbox-sm text-indigo-700 ring-1"
+                    />
+                    <span className="text-xs text-zinc-500  ">({onlineUsers.length - 1} online)</span>
+                </div>
+                
+            )}
             {/* User List */}
             <ul className="space-y-4">
                 {filteredUsers.map((user) => (
@@ -61,6 +76,9 @@ const Sidebar = () => {
                     </li>
                 ))}
             </ul>
+            {filteredUsers.length === 0 && (
+          <div className="text-center text-zinc-500 py-4">No online users</div>
+        )}
         </div>
 
     );
