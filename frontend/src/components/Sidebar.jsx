@@ -59,7 +59,7 @@ const Sidebar = () => {
                         key={user._id}
                         className={`flex items-center bg-gray gap-3 p-3 backdrop-brightness-150 rounded-xl transition-all duration-200 ease-in-out hover:shadow-md hover:bg-indigo-400 cursor-pointer   ${selectedUser?._id === user._id ? "bg-gray-300 ring-1 ring-base-300  text-white" : ""}`}
                     >
-                        <img src={user.profilePic || './avatar.png'} alt={user.name} className="w-10 h-10 rounded-full" />
+                        <img src={user.profilePic || 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg?semt=ais_hybrid'} alt={user.name} className="w-10 h-10 rounded-full" />
                         {isOpen && (
                             <div className="flex-1 min-w-0">
                                 <div className=" flex items-center space-x-2 ">    <h4 className="font-semibold truncate text-gray-800">{user.name}</h4>
