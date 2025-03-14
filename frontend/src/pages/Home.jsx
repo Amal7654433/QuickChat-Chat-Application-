@@ -9,12 +9,14 @@ const Home = () => {
   const { selectedUser } = useChatStore()
 
   return (
-
-    <div className="flex ">
+    <div className="flex">
+      
       <Sidebar />
       {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
 
     </div>
+
+
 
 
   )

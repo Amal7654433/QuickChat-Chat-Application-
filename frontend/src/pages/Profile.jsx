@@ -5,7 +5,7 @@ import imageCompression from "browser-image-compression";
 const Profile = () => {
     const { authUser, updateProfile, isUpdate } = userAuthStore()
     const [selectedImg, setSelectedImg] = useState(null);
-   console.log(authUser,'form profile pge')
+    console.log(authUser, 'form profile pge')
     const handleImageUpload = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -39,7 +39,7 @@ const Profile = () => {
                         <div className="flex flex-col items-center gap-4">
                             <div className="relative">
                                 <img
-                                    src={selectedImg || authUser.profilePic || "/avatar.png"}
+                                    src={selectedImg || authUser.profilePic || "https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg?semt=ais_hybrid"}
                                     alt="Profile"
                                     className="size-32 rounded-full object-cover border-4 "
                                 />
