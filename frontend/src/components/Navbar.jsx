@@ -61,7 +61,7 @@ const Navbar = () => {
                     </Link></li>
 
                     <li>  <Link to="/profile" >
-                        <User className="size-3" />   Profile  
+                        <User className="size-3" /> Profile  
                     </Link></li>
                     <li>  <Link to="#"  >
                       <Settings  className="size-3" />Settings
