@@ -1,4 +1,10 @@
 import mongoose from "mongoose";
+
+const reactionSchema = new mongoose.Schema({
+    emoji:  { type: String, required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+}, { _id: false });
+
 const messageSchema = new mongoose.Schema({
     senderId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -10,15 +16,11 @@ const messageSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    text: {
-        type: String
-    },
-    image: {
-        type: String
-    },
+    text:      { type: String },
+    image:     { type: String },
+    read:      { type: Boolean, default: false },
+    reactions: [reactionSchema],
+}, { timestamps: true });
 
-},
-    { timestamps: true })
-
-const Message = mongoose.model('Message', messageSchema)
-export default Message
+const Message = mongoose.model('Message', messageSchema);
+export default Message;

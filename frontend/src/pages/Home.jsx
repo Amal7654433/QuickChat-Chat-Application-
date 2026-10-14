@@ -1,29 +1,32 @@
-import React, { useEffect,useState } from 'react'
-import { userAuthStore } from '../store/userAuth'
+import { useChatStore } from '../store/useChatStore'
 import Sidebar from '../components/Sidebar'
 import ChatContainer from '../components/ChatContainer'
-import { useChatStore } from '../store/useChatStore'
 import NoChatSelected from '../components/NoChatSelected'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 const Home = () => {
   const { selectedUser } = useChatStore()
-  const [ddd,setddd]=useState(false)
-  console.log(ddd)
+  const isMobile = useIsMobile()
 
+  if (isMobile) {
+    // Mobile: full-screen sidebar OR full-screen chat (like WhatsApp)
+    return (
+      <div style={{ height: 'calc(100vh - 56px)', overflow: 'hidden', position: 'relative' }}>
+        {!selectedUser ? (
+          <Sidebar isMobile />
+        ) : (
+          <ChatContainer isMobile />
+        )}
+      </div>
+    )
+  }
+
+  // Desktop: side-by-side
   return (
-    <div className="flex">
-      
-      <Sidebar setddd={setddd} />
-    <p>{ddd}</p>
+    <div style={{ display: 'flex', height: 'calc(100vh - 56px)', overflow: 'hidden' }}>
+      <Sidebar />
       {!selectedUser ? <NoChatSelected /> : <ChatContainer />}
-  
-    
-
     </div>
-
-
-
-
   )
 }
 

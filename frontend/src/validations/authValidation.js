@@ -1,8 +1,10 @@
 import * as yup from "yup";
 
-// Common validation schema for both Signup and Login
 export const authSchema = yup.object().shape({
-    email: yup.string().email("Invalid email format").required("Email is required"),
+    email: yup
+        .string()
+        .email("Invalid email format")
+        .required("Email is required"),
     password: yup
         .string()
         .min(3, "Password must be at least 3 characters")
@@ -10,12 +12,18 @@ export const authSchema = yup.object().shape({
         .required("Password is required"),
 });
 
-// Signup validation (extends authSchema with name & confirmPassword)
 export const signupSchema = authSchema.shape({
     name: yup
         .string()
-        .matches(/^[a-zA-Z\s]+$/, "Only alphabets are allowed")
+        .matches(/^[a-zA-Z\s]+$/, "Only letters are allowed")
         .required("Name is required"),
+    username: yup
+        .string()
+        .min(3, "Username must be at least 3 characters")
+        .max(20, "Username must be 20 characters or less")
+        .matches(/^[a-zA-Z0-9_]+$/, "Only letters, numbers and _ allowed")
+        .matches(/^\S*$/, "No spaces allowed")
+        .required("Username is required"),
     confirmPassword: yup
         .string()
         .oneOf([yup.ref("password"), null], "Passwords must match")
